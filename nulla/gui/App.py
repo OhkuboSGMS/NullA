@@ -10,7 +10,7 @@ class MonitorApp(App):
         self.backend = backend
         self.monitor = Monitor()
         # TODO Interface
-        self.backend.on_update = self.monitor.update
+        self.backend.on_update.subscribe(self.monitor.update)
 
     def build(self):
         return self.monitor
