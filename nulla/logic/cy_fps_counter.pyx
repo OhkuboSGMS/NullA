@@ -1,5 +1,16 @@
 import time
+import ctypes
+import platform
 import cython
+
+winmm = ctypes.WinDLL('winmm')
+
+cdef time_begin(int period):
+    if platform.system() == 'Windows':
+        winmm.timeBeginPeriod(period)
+cdef time_end(int period):
+    if platform.system() == 'Windows':
+        winmm.timeEndPeriod(period)
 
 cdef:
     double MIN_DIFF = 0.001
@@ -56,6 +67,7 @@ cdef class FPSTimer:
         diff = ns_to_sec(end - self.prev_start)
         sleep_time = self.max_sleep_time - diff - self.over_sleep_time
         if not self.no_sleep:
+            time_begin(1)
             if sleep_time <= 0:
                 # 最低でも1ms以上スリープする
                 time.sleep(MIN_SLEEP_TIME)
@@ -63,6 +75,7 @@ cdef class FPSTimer:
             else:
                 time.sleep(sleep_time)
                 self.last_sleep_time = sleep_time
+            time_end(1)
         # 実際にどれだけsleepしたか(正確に指定した時間sleepするわけではない)
         after_sleep = ns_to_sec(time.perf_counter_ns() - end)
         self.over_sleep_time = after_sleep - sleep_time

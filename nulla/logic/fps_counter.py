@@ -1,5 +1,19 @@
 import time
 from contextlib import contextmanager
+import ctypes
+import platform
+
+winmm = ctypes.WinDLL('winmm')
+
+
+def time_begin(period: int):
+    if platform.system() == 'Windows':
+        winmm.timeBeginPeriod(period)
+
+
+def time_end(period: int):
+    if platform.system() == 'Windows':
+        winmm.timeEndPeriod(period)
 
 
 def ns_to_sec(ns: int) -> float:
@@ -40,15 +54,23 @@ class FPSTimer:
         diff = ns_to_sec(end - self.prev_start)
         sleep_time = self.max_sleep_time - diff - self.over_sleep_time
         if not self.no_sleep:
+            time_begin(1)
             if sleep_time <= 0:
-                # 最低でも1ms以上スリープする
-                time.sleep(self.MIN_SLEEP_TIME)
+                target_sleep_time = self.MIN_SLEEP_TIME
+                # 最低でも1ms以上スリープする(保証はない)
+
             else:
-                time.sleep(sleep_time)
+                target_sleep_time = sleep_time
+            time.sleep(target_sleep_time)
+            time_end(1)
         # 実際にどれだけsleepしたか(正確に指定した時間sleepするわけではない)
         after_sleep = ns_to_sec(time.perf_counter_ns() - end)
         self.over_sleep_time = after_sleep - sleep_time
-        # print(f"Sleep Time:{sleep_time * 1000:.2f}ms over sleep:{self.over_sleep_time * 1000:.3f}ms")
+        # print(f'Max Sleep:{self.max_sleep_time},diff:{diff},over_sleep:{self.over_sleep_time}')
+        # print(f"Sleep Time:{sleep_time * 1000:.3f}ms "
+        #       f"Target Sleep Time:{target_sleep_time * 1000:.3f}ms "
+        #       f"actual sleep time:{after_sleep * 1000:.3f}ms "
+        #       f"over sleep:{self.over_sleep_time * 1000:.3f}ms")
         self.calc_fps()
 
     @property
@@ -61,5 +83,4 @@ class FPSTimer:
             elapsed = time.perf_counter_ns()
             diff = ns_to_sec(elapsed - self.prev_fps_calc_time)
             self._fps = self.N_FPS_FRAME / diff
-            print(f'FPS:{self._fps:.2f}')
             self.prev_fps_calc_time = elapsed
