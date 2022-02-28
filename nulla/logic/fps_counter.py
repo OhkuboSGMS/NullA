@@ -3,6 +3,9 @@ from contextlib import contextmanager
 import ctypes
 import platform
 
+import cv2
+import numpy as np
+
 winmm = ctypes.WinDLL('winmm')
 
 
@@ -24,6 +27,9 @@ def ns_to_ms(ns: int) -> float:
     return ns / 1000_000
 
 
+font_face = cv2.FONT_HERSHEY_PLAIN
+
+
 class FPSTimer:
     MIN_SLEEP_TIME = 0.001  # 1ms
     N_FPS_FRAME = 16  # FPSを計算する頻度
@@ -38,6 +44,7 @@ class FPSTimer:
         self._fps = 0
         self.prev_fps_calc_time = time.perf_counter_ns()
         self.prev_start = 0
+        self.last_sleep_time = 0
 
     @contextmanager
     def update(self):
@@ -58,9 +65,9 @@ class FPSTimer:
             if sleep_time <= 0:
                 target_sleep_time = self.MIN_SLEEP_TIME
                 # 最低でも1ms以上スリープする(保証はない)
-
             else:
                 target_sleep_time = sleep_time
+            self.last_sleep_time = target_sleep_time
             time.sleep(target_sleep_time)
             time_end(1)
         # 実際にどれだけsleepしたか(正確に指定した時間sleepするわけではない)
@@ -77,6 +84,10 @@ class FPSTimer:
     def fps(self):
         return self._fps
 
+    @property
+    def last_sleep(self):
+        return self.last_sleep_time
+
     def calc_fps(self):
         # ビット演算による剰余
         if self.frame_count & (self.N_FPS_FRAME - 1) == 0:
@@ -84,3 +95,8 @@ class FPSTimer:
             diff = ns_to_sec(elapsed - self.prev_fps_calc_time)
             self._fps = self.N_FPS_FRAME / diff
             self.prev_fps_calc_time = elapsed
+
+    def draw(self, image: np.ndarray):
+        text = f'FPS:{self.fps:.1f}'
+        size, baseline = cv2.getTextSize(text, font_face, 1, 2)
+        cv2.putText(image, text, (0, size[1] + baseline), font_face, 1, (255, 255, 255), 2)
