@@ -10,7 +10,7 @@ mp_drawing = mp.solutions.drawing_utils
 
 class MPFaceDetection(MLBase):
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         super(MPFaceDetection, self).__init__()
         self.face_det = mp_face_detection.FaceDetection()
 
@@ -22,8 +22,7 @@ class MPFaceDetection(MLBase):
         image.flags.writeable = True
         return results
 
-    @classmethod
-    def draw(cls, image: np.ndarray, results, *args, **kwargs):
+    def draw(self, image: np.ndarray, results, *args, **kwargs):
         if results.detections:
             for detection in results.detections:
                 mp_drawing.draw_detection(image, detection)

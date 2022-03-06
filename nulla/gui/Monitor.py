@@ -2,7 +2,7 @@ from kivy.clock import mainthread
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
 
-from logic.cv2_to_kivy import cv2_to_kivy
+from nulla.logic.cv2_to_kivy import cv2_to_kivy
 
 
 class Monitor(BoxLayout):
