@@ -1,5 +1,6 @@
 import abc
 from abc import ABCMeta
+
 import numpy as np
 
 
@@ -13,5 +14,5 @@ class MLBase(metaclass=ABCMeta):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def draw(cls, image: np.ndarray, *args, **kwargs):
+    def draw(self, image: np.ndarray, *args, **kwargs):
         return image
