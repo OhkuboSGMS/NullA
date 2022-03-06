@@ -1,14 +1,14 @@
 from loguru import logger
 
-from logic.backend import Backend
-from src.res import initialize_kv
-from src.gui.App import MonitorApp
+from nulla.logic.backend import Backend
+from nulla.res import initialize_kv
+from nulla.gui.App import MonitorApp
 
 
 def main():
     try:
         initialize_kv(debug=True)
-        backend = Backend(src="test.mp4")
+        backend = Backend(src=0)
         backend.start()
         app = MonitorApp(backend)
         app.run()
