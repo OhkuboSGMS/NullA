@@ -16,3 +16,7 @@ class MLBase(metaclass=ABCMeta):
     @abc.abstractmethod
     def draw(self, image: np.ndarray, *args, **kwargs):
         return image
+
+    @abc.abstractmethod
+    def close(self):
+        pass
