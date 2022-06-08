@@ -1,11 +1,5 @@
-from pathlib import Path
-
-from kivy.lang import Builder
-from loguru import logger
+from nulla.util import _initialize_kv_
 
 
 def initialize_kv(debug: bool = False):
-    for file in Path(__file__).parent.glob("**/*.kv"):
-        if debug:
-            logger.debug(file)
-        Builder.load_file(str(file))
+    _initialize_kv_(__file__, debug)

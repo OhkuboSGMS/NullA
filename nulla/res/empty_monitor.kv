@@ -5,8 +5,14 @@
     Rectangle:
       pos: self.pos
       size: self.size
-  Label:
-    text: "Source is not Assign. \n Drag & Drop to Movie"
-    color: 1,1,1,1
-    halign: 'center'
-    valign: 'center'
+  BoxLayout:
+    #TODO TextInputもつける
+    orientation: 'vertical'
+    size_hint: 0.3,0.3
+    Label:
+      text: "Source is not Assign. \n Drag & Drop to Movie"
+      color: 1,1,1,1
+      halign: 'center'
+      valign: 'center'
+    TextInput:
+      id: url_input

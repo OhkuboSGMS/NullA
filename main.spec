@@ -1,6 +1,12 @@
 # -*- mode: python ; coding: utf-8 -*-
+import os
+import sys
 
+from PyInstaller.utils.hooks import collect_submodules
 from kivy_deps import sdl2, glew
+
+# コンソールから動作させる場合はローカルのパスが通っていないのでパスを追加
+sys.path.append(os.path.abspath(os.curdir))
 
 block_cipher = None
 
@@ -8,8 +14,9 @@ a = Analysis(['main.py'],
              pathex=[],
              binaries=[],
              datas=[('nulla/res', 'nulla/res')],
-             hiddenimports=[],
-             hookspath=[],
+             hiddenimports=['mediapipe',
+                            *collect_submodules('nulla')],
+             hookspath=['hooks'],
              hooksconfig={},
              runtime_hooks=[],
              excludes=[],
@@ -20,6 +27,7 @@ a = Analysis(['main.py'],
 pyz = PYZ(a.pure, a.zipped_data,
           cipher=block_cipher)
 
+
 # TODO Mediapipeのhookにする
 def get_mediapipe_path():
     import mediapipe
@@ -27,9 +35,6 @@ def get_mediapipe_path():
     return mediapipe_path
 
 
-mediapipe_tree = Tree(get_mediapipe_path(), prefix='mediapipe', excludes=["*.pyc"])
-a.datas += mediapipe_tree
-a.binaries = filter(lambda x: 'mediapipe' not in x[0], a.binaries)
 exe = EXE(pyz,
           a.scripts,
           [],
