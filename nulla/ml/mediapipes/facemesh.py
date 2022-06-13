@@ -3,7 +3,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 
-from ml.base import MLBase
+from nulla.ml.base import MLBase
 
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -24,27 +24,30 @@ class MPFaceMesh(MLBase):
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         results = self.facemesh.process(frame)
         frame.flags.writeable = True
-        frame = self.draw(frame, results)
-        return frame
+        return results
 
     def draw(self, image: np.ndarray, results):
-        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+        """
+        :param image: BGR
+        :param results:
+        :return:
+        """
         if results.multi_face_landmarks:
             for face_landmarks in results.multi_face_landmarks:
-                mp_drawing.draw_landmarks(
-                    image=image,
-                    landmark_list=face_landmarks,
-                    connections=mp_face_mesh.FACEMESH_TESSELATION,
-                    landmark_drawing_spec=None,
-                    connection_drawing_spec=mp_drawing_styles
-                        .get_default_face_mesh_tesselation_style())
-                mp_drawing.draw_landmarks(
-                    image=image,
-                    landmark_list=face_landmarks,
-                    connections=mp_face_mesh.FACEMESH_CONTOURS,
-                    landmark_drawing_spec=None,
-                    connection_drawing_spec=mp_drawing_styles
-                        .get_default_face_mesh_contours_style())
+                # mp_drawing.draw_landmarks(
+                #     image=image,
+                #     landmark_list=face_landmarks,
+                #     connections=mp_face_mesh.FACEMESH_TESSELATION,
+                #     landmark_drawing_spec=None,
+                #     connection_drawing_spec=mp_drawing_styles
+                #         .get_default_face_mesh_tesselation_style())
+                # mp_drawing.draw_landmarks(
+                #     image=image,
+                #     landmark_list=face_landmarks,
+                #     connections=mp_face_mesh.FACEMESH_CONTOURS,
+                #     landmark_drawing_spec=None,
+                #     connection_drawing_spec=mp_drawing_styles
+                #         .get_default_face_mesh_contours_style())
                 mp_drawing.draw_landmarks(
                     image=image,
                     landmark_list=face_landmarks,
@@ -53,3 +56,6 @@ class MPFaceMesh(MLBase):
                     connection_drawing_spec=mp_drawing_styles
                         .get_default_face_mesh_iris_connections_style())
         return image
+
+    def close(self):
+        pass

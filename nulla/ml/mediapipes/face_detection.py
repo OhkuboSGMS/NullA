@@ -2,7 +2,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 
-from ml.base import MLBase
+from nulla.ml.base import MLBase
 
 mp_face_detection = mp.solutions.face_detection
 mp_drawing = mp.solutions.drawing_utils

@@ -11,8 +11,8 @@ from kivy.properties import ListProperty
 from kivy.uix.widget import Widget
 from mediapipe.python.solutions.drawing_utils import _normalized_to_pixel_coordinates
 
-from ml.mediapipe.face_detection import MPFaceDetection
 from nulla.gui import add_widget
+from nulla.ml.mediapipes.face_detection import MPFaceDetection
 
 mp_drawing = mp.solutions.drawing_utils
 
@@ -84,6 +84,6 @@ class MPFaceCover(MPFaceDetection):
                         self.widget.size = size[0] * r_w, size[1] * r_h
                         self.widget.pos = pos[0] * r_w, pos[1] * r_h
 
-                    # mp_drawing.draw_detection(image, detection)
+                    mp_drawing.draw_detection(image, detection)
 
         return image
