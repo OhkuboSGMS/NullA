@@ -8,7 +8,7 @@ from loguru import logger
 from rx.subject import Subject
 
 from nulla import factory
-from nulla.factory import DetectorNotFound
+from nulla.error import DetectorNotFoundError
 from nulla.logic.fps_counter import FPSTimer
 # from logic.cy_fps_counter import FPSTimer
 from nulla.logic.player import Player
@@ -47,8 +47,11 @@ class Backend:
     def set_model(self, src: Optional[str]):
         try:
             self.models = [factory.get(src)()]
-        except DetectorNotFound as e:
-            logger.warning(DetectorNotFound)
+        except ModuleNotFoundError as e:
+            logger.warning(e)
+            self.models = []
+        except DetectorNotFoundError as e:
+            logger.warning(DetectorNotFoundError)
             self.models = []
 
     def start(self):
