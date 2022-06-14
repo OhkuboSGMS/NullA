@@ -12,7 +12,7 @@ from kivy.uix.widget import Widget
 from mediapipe.python.solutions.drawing_utils import _normalized_to_pixel_coordinates
 
 from nulla.gui import add_widget
-from nulla.ml.mediapipes.face_detection import MPFaceDetection
+from nulla.ml.mediapipe.face_detection import MPFaceDetection
 
 mp_drawing = mp.solutions.drawing_utils
 

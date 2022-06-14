@@ -3,7 +3,7 @@ import numpy as np
 from cv2_resize import resize
 from mediapipe.python.solutions.drawing_utils import _normalized_to_pixel_coordinates
 
-from nulla.ml.mediapipes.face_detection import MPFaceDetection
+from nulla.ml.mediapipe.face_detection import MPFaceDetection
 
 
 class FaceBlend(MPFaceDetection):
