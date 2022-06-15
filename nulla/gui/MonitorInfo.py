@@ -2,14 +2,20 @@ from typing import Tuple, Optional
 
 from kivy.clock import mainthread
 from kivy.core.text import Label
+from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
 
 
 class MonitorInfo(BoxLayout):
+    __kv__loaded__: bool = False
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, **kwargs):
+        if not MonitorInfo.__kv__loaded__:
+            Builder.load_file('nulla/res/monitor_info.kv')
+            MonitorInfo.__kv__loaded__ = True
+
         self.text: Optional[Label] = None
-        super(MonitorInfo, self).__init__(*args, **kwargs)
+        super(MonitorInfo, self).__init__(**kwargs)
 
     def on_kv_post(self, base_widget):
         super().on_kv_post(base_widget)
