@@ -1,9 +1,12 @@
+from kivy.lang import Builder
 from kivy.uix.floatlayout import FloatLayout
 
-from nulla.gui.LazyWidget import LazyWidget
 
-
-class Root(LazyWidget, FloatLayout):
+class Root(FloatLayout):
+    __kv__loaded: bool = False
 
     def __init__(self, **kwargs):
-        super(Root, self).__init__(kv_file='nulla/res/root.kv', **kwargs)
+        if not Root.__kv__loaded:
+            Root.__kv__loaded = True
+            Builder.load_file('nulla/res/root.kv')
+        super(Root, self).__init__(**kwargs)
