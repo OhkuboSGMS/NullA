@@ -35,3 +35,10 @@ Build cython module
 ## Reference
 
 * Cython https://github.com/cython/cython
+
+
+## TODO
+* WEBカメラ,IPカメラ選択可能
+* Model 選択可能
+* Icon 作成
+* requirements整理
