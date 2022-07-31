@@ -5,14 +5,33 @@
     Rectangle:
       pos: self.pos
       size: self.size
-  BoxLayout:
-    #TODO TextInputもつける
-    orientation: 'vertical'
-    size_hint: 0.3,0.3
-    Label:
-      text: "Source is not Assign. \n Drag & Drop to Movie"
-      color: 1,1,1,1
-      halign: 'center'
-      valign: 'center'
-    TextInput:
-      id: url_input
+  FloatLayout:
+    canvas.before:
+      Color:
+        rgba: 0,0,0,0.2
+      Rectangle:
+        pos: self.pos
+        size: self.size
+    BoxLayout:
+      canvas.before:
+        Color:
+          rgba: 0.6,0.6,0.6,0.2
+        Line:
+          width: 2.
+          rectangle: (self.x, self.y, self.width, self.height)
+          Label:
+      pos_hint: { 'center_x': 0.5 , 'center_y': 0.5}
+      orientation: 'vertical'
+      size_hint: 0.4,0.3
+      Label:
+        size_hint: 1,2
+        text: "Source is not Assign. \n Drag & Drop Video or \n Enter URL"
+        color: 1,1,1,1
+        halign: 'center'
+        valign: 'center'
+      TextInput:
+        id: url_input
+        halign: 'center'
+        valign: 'center'
+        padding_y: '10dp'
+        multiline: False

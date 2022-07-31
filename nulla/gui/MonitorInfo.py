@@ -24,7 +24,7 @@ class MonitorInfo(BoxLayout):
     @mainthread
     def update(self, data: Tuple):
         if self.text is not None:
-            _, fps, source, model = data
+            _, fps, source, models = data
             self.text.text = f'Source : {source}\n' \
-                             f'FPS : {fps:.2f}\n' \
-                             f'Model : {model}'
+                             f'FPS : {fps:.2f}\n'
+            self.text.text += '\n'.join([f'Model[{i:02d}] : {model}' for i, model in enumerate(models)])

@@ -1,0 +1,19 @@
+<MLItem>:
+  canvas.before:
+    Color:
+      rgba: (.5, 0.5, .5, 1)
+    Rectangle:
+      pos: self.pos
+      size: self.size
+  Label:
+    id: text
+    text: root.text
+
+<ModelList>:
+  viewclass: 'MLItem'
+  RecycleBoxLayout:
+    default_size: None, dp(48)
+    default_size_hint: 1, None
+    size_hint_y: None
+    height: self.minimum_height
+    orientation: 'vertical'

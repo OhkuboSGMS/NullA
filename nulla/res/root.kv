@@ -1,13 +1,20 @@
 #:import Monitor nulla.gui.Monitor
+#:import ModelList nulla.gui.ModelSelector
 <Root>:
-  canvas:
+  canvas.before:
     Color:
       rgb: 1, 1, 1
     Rectangle:
       size: self.size
       pos: self.pos
-  Monitor:
-    id: monitor
+  BoxLayout:
+    orientation: 'horizontal'
+    Monitor:
+      id: monitor
+      size_hint: 0.8,1
+    ModelList:
+      id: model_list
+      size_hint: 0.2,1
   MonitorInfo:
     id: info
     size_hint: 0.3,0.2

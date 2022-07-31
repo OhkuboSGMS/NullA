@@ -9,6 +9,7 @@ from nulla.gui.EmptyMonitor import EmptyMonitor
 from nulla.gui.KivyWidgetAPI import set_instance
 from nulla.gui.Root import Root
 from nulla.logic.backend import Backend
+from nulla.util import int_or_str
 
 
 class MonitorApp(App):
@@ -21,10 +22,12 @@ class MonitorApp(App):
         set_instance(self.root)
         self.monitor = self.root.ids.monitor
         self.info = self.root.ids.info
+        self.model_list = self.root.ids.model_list
         # TODO Interface
         self.backend.on_initialize.subscribe(self.initialize)
         self.backend.on_update.subscribe(self.monitor.update)
         self.backend.on_update.subscribe(self.info.update)
+        self.backend.on_load_model.subscribe(self.model_list.update)
 
     @mainthread
     def initialize(self, source: Optional):
@@ -41,15 +44,29 @@ class MonitorApp(App):
         else:
             self.root.add_widget(self._empty_monitor)
 
+    def select_model(self, model: str) -> None:
+        self.backend.set_model(model)
+
     # TODO Kivy2.1.0現在 APIと引数が異なっている
     def _on_drop_file(self, window, filename: bytes, x: int, y: int, *args):
         # filenameはutf-8
         if filename:
             self.backend.set_resource(str(filename, encoding="utf-8"))
 
+    def _on_url_input(self, url: str) -> None:
+        """
+        入力欄から動画リソースを入力.
+        Backendに設定
+        :param url:
+        :return:
+        """
+        if url:
+            self.backend.set_resource(int_or_str(url))
+
     def build(self):
-        self._empty_monitor = EmptyMonitor()
+        self._empty_monitor = EmptyMonitor(self._on_url_input)
         from kivy.core.window import Window
         inspector.create_inspector(Window, self.root)
         Window.bind(on_drop_file=self._on_drop_file)
+        Window.size = (1024, 600)
         return self.root
