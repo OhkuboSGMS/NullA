@@ -2,7 +2,6 @@ from typing import Optional
 
 from kivy.app import App
 from kivy.clock import mainthread
-from kivy.modules import inspector
 from loguru import logger
 
 from nulla.gui.EmptyMonitor import EmptyMonitor
@@ -64,9 +63,10 @@ class MonitorApp(App):
             self.backend.set_resource(int_or_str(url))
 
     def build(self):
+        self.icon = 'assets/icon.ico'
         self._empty_monitor = EmptyMonitor(self._on_url_input)
         from kivy.core.window import Window
-        inspector.create_inspector(Window, self.root)
+        # inspector.create_inspector(Window, self.root)
         Window.bind(on_drop_file=self._on_drop_file)
         Window.size = (1024, 600)
         return self.root

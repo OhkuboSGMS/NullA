@@ -2,18 +2,18 @@
 import os
 import sys
 
-from PyInstaller.utils.hooks import collect_submodules
+from PyInstaller.utils.hooks import collect_submodules, collect_data_files
 from kivy_deps import sdl2, glew
 
 # コンソールから動作させる場合はローカルのパスが通っていないのでパスを追加
 sys.path.append(os.path.abspath(os.curdir))
 
 block_cipher = None
-
 a = Analysis(['main.py'],
              pathex=[],
              binaries=[],
-             datas=[('nulla/res', 'nulla/res')],
+             datas=[('nulla/res', 'nulla/res'),
+                    ('assets', 'assets')],
              hiddenimports=['mediapipe',
                             *collect_submodules('nulla')],
              hookspath=['hooks'],
@@ -27,14 +27,6 @@ a = Analysis(['main.py'],
 pyz = PYZ(a.pure, a.zipped_data,
           cipher=block_cipher)
 
-
-# TODO Mediapipeのhookにする
-def get_mediapipe_path():
-    import mediapipe
-    mediapipe_path = mediapipe.__path__[0]
-    return mediapipe_path
-
-
 exe = EXE(pyz,
           a.scripts,
           [],
@@ -44,7 +36,8 @@ exe = EXE(pyz,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          console=True,
+          icon='assets/icon.ico',
+          console=False,
           disable_windowed_traceback=False,
           target_arch=None,
           codesign_identity=None,
@@ -57,4 +50,4 @@ coll = COLLECT(exe,
                strip=False,
                upx=True,
                upx_exclude=[],
-               name='main')
+               name='nulla')
