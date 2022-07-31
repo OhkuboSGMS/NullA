@@ -27,3 +27,14 @@ class MPFaceDetection(MLBase):
             for detection in results.detections:
                 mp_drawing.draw_detection(image, detection)
         return image
+
+    def close(self):
+        self.face_det.close()
+
+    @classmethod
+    def help(self) -> str:
+        return 'Detect Face From Single Image. Mediapipe'
+
+    @property
+    def name(self) -> str:
+        return 'MPFaceDetection'

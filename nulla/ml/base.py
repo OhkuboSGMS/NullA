@@ -21,3 +21,13 @@ class MLBase(metaclass=ABCMeta):
     @abc.abstractmethod
     def close(self):
         pass
+
+    @classmethod
+    @abc.abstractmethod
+    def help(self) -> str:
+        return 'This is Base Class'
+
+    @property
+    @abc.abstractmethod
+    def name(self) -> str:
+        return 'MLBase '

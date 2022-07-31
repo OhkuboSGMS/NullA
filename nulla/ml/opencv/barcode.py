@@ -3,7 +3,7 @@ import cv2
 from nulla.ml.base import MLBase
 
 
-class BarcodeDetector(MLBase):
+class Cv2BarcodeDetector(MLBase):
 
     def __init__(self):
         self.detector = cv2.barcode_BarcodeDetector()
@@ -25,7 +25,7 @@ class BarcodeDetector(MLBase):
         if corners is None:
             return image
         print(corners)
-        corners = np.array(corners,dtype=np.int)
+        corners = np.array(corners, dtype=np.int)
         cv2.drawContours(image, np.array(corners), -1, (255, 0, 0))
         # for point in corners:
         #     print(corners)
@@ -35,3 +35,11 @@ class BarcodeDetector(MLBase):
 
     def close(self):
         pass
+
+    @classmethod
+    def help(cls) -> str:
+        return 'Detect Barcode Code with Opencv Barcode Detector '
+
+    @property
+    def name(self) -> str:
+        return 'Cv2BarcodeCodeDetector'

@@ -1,5 +1,4 @@
 import cv2
-
 import mediapipe as mp
 import numpy as np
 
@@ -58,4 +57,12 @@ class MPFaceMesh(MLBase):
         return image
 
     def close(self):
-        pass
+        self.facemesh.close()
+
+    @property
+    def name(self) -> str:
+        return 'MPFaceMesh'
+
+    @classmethod
+    def help(self) -> str:
+        return 'Estimate Face Mesh From Single Image'

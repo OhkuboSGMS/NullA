@@ -66,3 +66,11 @@ class MPPose(MLBase):
 
     def close(self):
         self.pose.close()
+
+    @classmethod
+    def help(self) -> str:
+        return 'Estimate Human Pose From Single Image'
+
+    @property
+    def name(self) -> str:
+        return 'MPPose'

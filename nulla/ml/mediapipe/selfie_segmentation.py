@@ -35,3 +35,11 @@ class MPSelfieSegmentation(MLBase):
 
     def close(self):
         self.model.close()
+
+    @classmethod
+    def help(cls) -> str:
+        return 'Selfie Segmentation'
+
+    @property
+    def name(self) -> str:
+        return 'MPSelfieSegmentation'

@@ -87,3 +87,14 @@ class MPFaceCover(MPFaceDetection):
                     mp_drawing.draw_detection(image, detection)
 
         return image
+
+    def close(self):
+        super().close()
+
+    @classmethod
+    def help(cls) -> str:
+        return 'Covering Face with MPFaceDetection'
+
+    @property
+    def name(self) -> str:
+        return 'MPFaceCover'

@@ -49,3 +49,12 @@ class FaceBlend(MPFaceDetection):
 
     def close(self):
         super(FaceBlend, self).close()
+
+    @classmethod
+    def help(cls) -> str:
+        return 'Blend 2 Face'
+
+    @property
+    def name(self) -> str:
+        return 'MPFaceBlend'
+

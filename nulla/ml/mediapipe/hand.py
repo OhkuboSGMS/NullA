@@ -1,10 +1,10 @@
 from typing import Any
 
+import cv2
+import mediapipe as mp
 import numpy as np
 
 from nulla.ml.base import MLBase
-import cv2
-import mediapipe as mp
 
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
@@ -17,7 +17,7 @@ class MPHandTracking(MLBase):
                                    min_detection_confidence=0.5,
                                    min_tracking_confidence=0.5)
 
-    def __call__(self,frame, *args, **kwargs):
+    def __call__(self, frame, *args, **kwargs):
         frame.flags.writeable = False
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         results = self.hand.process(frame)
@@ -34,5 +34,14 @@ class MPHandTracking(MLBase):
                     mp_drawing_styles.get_default_hand_landmarks_style(),
                     mp_drawing_styles.get_default_hand_connections_style())
         return image
+
     def close(self):
         self.hand.close()
+
+    @property
+    def name(self) -> str:
+        return 'MPHandTracking'
+
+    @classmethod
+    def help(self) -> str:
+        return 'Estimate Hand KeyPoint From Single Image'
