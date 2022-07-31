@@ -1,0 +1,11 @@
+Cython==0.29.30
+Kivy==2.1.0
+loguru==0.6.0
+matplotlib==3.5.1
+mediapipe==0.8.9.1
+opencv-contrib-python==4.5.5.62
+pyenchant==3.2.2
+pyinstaller==4.10
+pyinstaller-hooks-contrib==2022.3
+Rx==3.2.0
+cv-resize @ git+https://github.com/OhkuboSGMS/sandbox.git#subdirectory=resize

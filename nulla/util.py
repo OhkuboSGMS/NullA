@@ -16,3 +16,12 @@ def int_or_str(v: Optional[str]) -> Union[str, int]:
     if v is None:
         return ''
     return int(v) if str.isdigit(v) else v
+
+
+def add_file_logger():
+    logger.add(".log/nulla_{time}.log", level="DEBUG", rotation="50 MB")
+
+
+def is_frozen() -> bool:
+    import sys
+    return getattr(sys, 'frozen', False)
