@@ -1,7 +1,5 @@
-from threading import Lock
 from typing import Optional, List
 
-from kivy.clock import mainthread
 from kivy.uix.widget import Widget
 from loguru import logger
 
@@ -34,7 +32,6 @@ def add_widget(widget: Widget):
 def set_instance(widget: Widget):
     global instance
     instance = KivyWidgetAPI(widget)
-    logger.debug('set instance')
     for widget in __widget_queue:
         instance.root.add_widget(widget)
-    logger.debug(list(instance.root.children))
+    # logger.debug(list(instance.root.children))

@@ -19,18 +19,23 @@ from nulla.ml.base import MLBase
 class Backend:
     lock = threading.Lock()
 
-    def __init__(self, on_update: Callable[[np.ndarray], NoReturn] = None):
+    def __init__(self, on_update: Callable[[np.ndarray], NoReturn] = None, frozen: bool = False):
+        self.frozen = frozen
         self.player: Optional[Player] = None
         self.models: List[MLBase] = []
         self.process_thread: Optional[Thread] = None
+
         self.end: bool = False
         self.on_initialize = Subject()
         self.on_update = Subject()
         self.on_load_model = Subject()
-        factory.load_model_async(lambda v: self.on_load_model.on_next(v))
+
         if on_update:
             self.on_update.subscribe(on_update)
         self.fps_timer = FPSTimer(target_fps=30)
+
+    def load_models(self):
+        factory.load_model_async(lambda v: self.on_load_model.on_next(v), self.frozen)
 
     # Float Layout に対してのアクセスを持っておけばよい？
     def set_resource(self, src: Union[int, str, None] = None):
