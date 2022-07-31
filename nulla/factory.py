@@ -1,17 +1,28 @@
 import os
-from typing import Optional
+from abc import ABCMeta
+from threading import Thread
+from typing import Optional, Callable, Set, Tuple
 
-from nulla.error import DetectorNotFoundError
 from nulla import ml
-from nulla.ml.base import MLBase
 from nulla.__factory_util__ import search_subclass, walk_package
+from nulla.error import DetectorNotFoundError
+from nulla.ml.base import MLBase
 
 namespace = ml.__package__ + '.'
 root = os.path.dirname(__file__)
 
 
-# def list_detector() -> Sequence[str]:
-#     return tuple(CLASS_MAP.keys())
+def load_model_async(callback: Callable[[Set[Tuple[str, ABCMeta]]], None]):
+    """
+    非同期でモデルを読み込み.
+    :param callback: 読み込み完了後，実行
+    :return:
+    """
+    def load():
+        packages = walk_package()
+        callback(packages)
+
+    Thread(name='Package Load Thread', target=load).start()
 
 
 def get(name: Optional[str]) -> MLBase:
@@ -24,7 +35,6 @@ def get(name: Optional[str]) -> MLBase:
     :raises DetectorNotFound
     :return:
     """
-    walk_package()
     if name is None:
         raise DetectorNotFoundError(name)
 
