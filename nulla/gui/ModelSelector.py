@@ -49,6 +49,6 @@ class ModelList(RecycleView):
                 'text': x[0],
                 'data': x,
                 'callback': lambda x: App.get_running_app().select_model(x[1])
-            } for x in data]
+            } for x in sorted(list(data), key=lambda x: x[0])]
 
         Clock.schedule_once(lambda ins: _update())

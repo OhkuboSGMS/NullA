@@ -16,7 +16,6 @@ def load_model_async(callback: Callable[[Set[Tuple[str, ABCMeta]]], None], froze
     :param frozen: アプリかpythonから実行か
     :return:
     """
-
     if frozen:
         from nulla.models import models
         data: Set[Tuple[str, ABCMeta]] = {(k, v) for k, v in models.items()}

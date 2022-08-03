@@ -10,7 +10,7 @@ mp_face_mesh = mp.solutions.face_mesh
 
 
 class MPFaceMesh(MLBase):
-    def __init__(self):
+    def __init__(self, **kwargs):
         super(MPFaceMesh, self).__init__()
         self.facemesh = mp_face_mesh.FaceMesh(
             max_num_faces=1,

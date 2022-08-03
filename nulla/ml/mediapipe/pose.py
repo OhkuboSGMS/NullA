@@ -42,7 +42,7 @@ __all__ = ['MPPose']
 
 
 class MPPose(MLBase):
-    def __init__(self):
+    def __init__(self, **kwargs):
         super(MPPose, self).__init__()
         self.pose = mp_pose.Pose(min_detection_confidence=0.5,
                                  min_tracking_confidence=0.5,
@@ -67,10 +67,10 @@ class MPPose(MLBase):
     def close(self):
         self.pose.close()
 
-    @classmethod
-    def help(self) -> str:
-        return 'Estimate Human Pose From Single Image'
-
     @property
     def name(self) -> str:
         return 'MPPose'
+
+    @classmethod
+    def help(self) -> str:
+        return 'Estimate Human Pose From Single Image'

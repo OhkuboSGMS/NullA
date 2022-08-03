@@ -44,6 +44,11 @@ class MonitorApp(App):
             self.root.add_widget(self._empty_monitor)
 
     def select_model(self, model: str) -> None:
+        """
+        モデルを選択. Call from MLItem
+        :param model:
+        :return:
+        """
         self.backend.set_model(model)
 
     # TODO Kivy2.1.0現在 APIと引数が異なっている

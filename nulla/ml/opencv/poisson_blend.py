@@ -4,9 +4,13 @@ import numpy as np
 from nulla.ml.base import MLBase
 from cv2_resize import resize
 
+"""
+https://docs.opencv.org/4.5.5/df/da0/group__photo__clone.html
+"""
+
 
 class Cv2PoissonBlend(MLBase):
-    def __init__(self, src):
+    def __init__(self, src: str, **kwargs):
         self.type = cv2.NORMAL_CLONE
         self.obj = resize.resize_with_aspect(cv2.imread(src), width=120)
 

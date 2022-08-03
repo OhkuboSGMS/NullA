@@ -12,7 +12,7 @@ mp_hands = mp.solutions.hands
 
 
 class MPHandTracking(MLBase):
-    def __init__(self):
+    def __init__(self, **kwargs):
         self.hand = mp_hands.Hands(model_complexity=0,
                                    min_detection_confidence=0.5,
                                    min_tracking_confidence=0.5)

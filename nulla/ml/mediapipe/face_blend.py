@@ -6,11 +6,10 @@ from mediapipe.python.solutions.drawing_utils import _normalized_to_pixel_coordi
 from nulla.ml.mediapipe.face_detection import MPFaceDetection
 
 
-class FaceBlend(MPFaceDetection):
-    def __init__(self, src_face: str):
-        super(FaceBlend, self).__init__()
-        self.src_face = cv2.imread(src_face)
-        # self.src_face = resize.resize_with_aspect(cv2.imread(src_face),width=300)
+class MPFaceBlend(MPFaceDetection):
+    def __init__(self, src: str = '', **kwargs):
+        super(MPFaceBlend, self).__init__()
+        self.src_face = cv2.imread(src)
         self.src_det = self.face_det.process(self.src_face)
         self.src_mask = np.zeros(self.src_face.shape, self.src_face.dtype)
         img_h, img_w = self.src_face.shape[:2]
@@ -22,11 +21,9 @@ class FaceBlend(MPFaceDetection):
         # cv2.fillPoly(self.src_mask, [xy_bbox], colors.white)
         self.src_face = self.src_face[y:y + h, x:x + w, :]
         self.src_mask = 255 * np.ones(self.src_face.shape, self.src_face.dtype)
-        # cv2.imshow('test src', self.src_face)
-        # cv2.waitKey(-1)
 
     def __call__(self, image, *args, **kwargs):
-        return super(FaceBlend, self).__call__(image)
+        return super(MPFaceBlend, self).__call__(image)
 
     def draw(self, image: np.ndarray, result, *args, **kwargs):
         img_h, img_w = image.shape[:2]
@@ -48,7 +45,7 @@ class FaceBlend(MPFaceDetection):
         return output
 
     def close(self):
-        super(FaceBlend, self).close()
+        super(MPFaceBlend, self).close()
 
     @classmethod
     def help(cls) -> str:
@@ -57,4 +54,3 @@ class FaceBlend(MPFaceDetection):
     @property
     def name(self) -> str:
         return 'MPFaceBlend'
-
