@@ -15,7 +15,7 @@ class Player:
         """
         self.source = src
         self.flip = flip
-        self.capture = cv2.VideoCapture(src)
+        self.capture = cv2.VideoCapture(self.source)
 
     def next(self) -> Optional[np.ndarray]:
         ret, frame = self.capture.read()
@@ -24,7 +24,11 @@ class Player:
                 frame = cv2.flip(frame, self.flip)
             return frame
         else:
-            return None
+            self.capture = cv2.VideoCapture(self.source)
+            ret, frame = self.capture.read()
+            if not ret:
+                raise Exception(self.source)
+            return frame
 
     def close(self):
         if self.capture and self.capture.isOpened():

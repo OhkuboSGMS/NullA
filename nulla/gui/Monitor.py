@@ -21,5 +21,5 @@ class Monitor(BoxLayout):
 
     @mainthread
     def update(self, data):
-        img, _, _, _ = data
+        img, _, _, _, _ = data
         self.image.texture = cv2_to_kivy(img)

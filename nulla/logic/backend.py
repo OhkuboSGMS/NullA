@@ -2,7 +2,7 @@ import threading
 import time
 from abc import ABCMeta
 from threading import Thread
-from typing import Union, Optional, Callable, NoReturn, List
+from typing import Union, Optional, Callable, NoReturn, List, Dict
 
 import numpy as np
 from loguru import logger
@@ -19,8 +19,9 @@ from nulla.ml.base import MLBase
 class Backend:
     lock = threading.Lock()
 
-    def __init__(self, on_update: Callable[[np.ndarray], NoReturn] = None, frozen: bool = False):
+    def __init__(self, on_update: Callable[[np.ndarray], NoReturn] = None, frozen: bool = False, data: Dict = {}):
         self.frozen = frozen
+        self.data = data
         self.player: Optional[Player] = None
         self.models: List[MLBase] = []
         self.process_thread: Optional[Thread] = None
@@ -62,11 +63,11 @@ class Backend:
             with self.lock:
                 for model in self.models:
                     model.close()
-                self.models = [src()]
+                self.models = [src(**self.data)]
             return
         try:
             with self.lock:
-                new_model = [factory.get(src)()]
+                new_model = [factory.get(src)(**self.data)]
                 for model in self.models:
                     model.close()
                 self.models = new_model
@@ -80,18 +81,28 @@ class Backend:
         self.process_thread.start()
 
     def run(self):
-        while not self.end and True:
-            if self.player is None:
-                time.sleep(0.01)
-                continue
-            self.fps_timer.start()
-            # start fps timer
-            frame = self.player.next()
+        try:
+            while not self.end and True:
+                if self.player is None:
+                    time.sleep(0.01)
+                    continue
+                self.fps_timer.start()
+                # start fps timer
+                frame = self.player.next()
+                with self.lock:
+                    result = None
+                    for model in self.models:
+                        result = model(frame)
+                        frame = model.draw(frame, result)
+                    # modelから GUIに表示してほしい情報を受け取る
+                info = getattr(result, 'info', '')
+
+                # stop and wait
+                self.fps_timer.stop_and_wait()
+                # TODO make class
+                self.on_update.on_next(
+                    (frame, self.fps_timer.fps, self.player.source, [m.name for m in self.models], info))
             for model in self.models:
-                result = model(frame)
-                frame = model.draw(frame, result)
-            # stop and wait
-            self.fps_timer.stop_and_wait()
-            self.on_update.on_next((frame, self.fps_timer.fps, self.player.source, [m.name for m in self.models]))
-        for model in self.models:
-            model.close()
+                model.close()
+        except Exception as e:
+            logger.exception(e)
