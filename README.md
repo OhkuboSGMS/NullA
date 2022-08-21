@@ -39,6 +39,7 @@ Build cython module
 ## Reference
 
 * Cython https://github.com/cython/cython
-
+* Onnx Model Zoo https://github.com/onnx/models
 
 ## TODO
+* モデル切り替え時に時々推論がストップする.
