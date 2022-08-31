@@ -4,7 +4,6 @@ from typing import Any
 import cv2
 import numpy as np
 import onnxruntime as ort
-from mediapipe.python.solutions.drawing_utils import _normalized_to_pixel_coordinates
 
 from nulla.download import cache_download_from_github
 from nulla.ml.mediapipe.face_detection import MPFaceDetection
@@ -50,28 +49,10 @@ class OnnxFER(MPFaceDetection):
         self.input_name = self.model.get_inputs()[0].name
         self.output_name = self.model.get_outputs()[0].name
 
-    def _crop_face(self, frame, detect_result):
-        image_rows, image_cols, _ = frame.shape
-        if detect_result.detections is None or len(detect_result.detections) == 0:
-            return None, None
-        detection = detect_result.detections[0]
-        location = detection.location_data
-        relative_bounding_box = location.relative_bounding_box
-        lt = _normalized_to_pixel_coordinates(
-            relative_bounding_box.xmin, relative_bounding_box.ymin, image_cols,
-            image_rows)
-        rb = _normalized_to_pixel_coordinates(
-            relative_bounding_box.xmin + relative_bounding_box.width,
-            relative_bounding_box.ymin + relative_bounding_box.height, image_cols,
-            image_rows)
-        if not lt or not rb:
-            return None, None
-        return lt, rb
-
     def __call__(self, frame):
         detect_result = super(OnnxFER, self).__call__(frame)
         detect_result.classes = None
-        lt, rb = self._crop_face(frame, detect_result)
+        lt, rb = self.crop_face(frame, detect_result)
         if not lt or not rb:
             return detect_result
         crop_face = frame[lt[1]:rb[1], lt[0]:rb[0], :]
@@ -106,10 +87,9 @@ class OnnxFER(MPFaceDetection):
         del self.model
 
     @classmethod
-    def help(self) -> str:
+    def help(cls) -> str:
         return 'Facial Expression Recognition with ONNX. detect with MediaPipe Face Detection'
 
     @property
     def name(self) -> str:
         return 'OnnxFER'
-
