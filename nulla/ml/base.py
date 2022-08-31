@@ -2,7 +2,7 @@ import abc
 from abc import ABCMeta
 from typing import Any
 
-import numpy as np
+from nulla.typer import Frame
 
 
 class MLBase(metaclass=ABCMeta):
@@ -15,7 +15,7 @@ class MLBase(metaclass=ABCMeta):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def draw(self, image: np.ndarray, results: Any, *args, **kwargs):
+    def draw(self, image: Frame, results: Any, *args, **kwargs):
         return image
 
     @abc.abstractmethod
@@ -24,7 +24,7 @@ class MLBase(metaclass=ABCMeta):
 
     @classmethod
     @abc.abstractmethod
-    def help(self) -> str:
+    def help(cls) -> str:
         return 'This is Base Class'
 
     @property
