@@ -2,7 +2,7 @@ Cython==0.29.30
 Kivy==2.1.0
 loguru==0.6.0
 matplotlib==3.5.1
-mediapipe==0.8.9.1
+mediapipe==0.8.11
 onnx==1.12.0
 onnxruntime==1.12.1
 opencv-contrib-python==4.5.5.62
