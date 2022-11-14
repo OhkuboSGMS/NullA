@@ -9,6 +9,8 @@ https://user-images.githubusercontent.com/11247895/201685742-05e1e936-2d64-4600-
 
 Machine Model's Inference GUI
 
+## Install(Binary)
+get executable file from [release](https://github.com/OhkuboSGMS/NullA/releases) 
 ## Install 
  ```
  conda create -n nulla python=3.8
