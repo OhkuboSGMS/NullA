@@ -1,3 +1,4 @@
+⚠ Everything is unstable for now ⚠
 # NULL-A
 
 ![](doc/NULL_A_Sketch.png)
@@ -9,12 +10,11 @@ Machine Model's Inference GUI
 ## Install 
  ```
  conda create -n nulla python=3.8
- pip install ./ 
+ pip install -r requirments.txt
  ```
 
 ## Run
  `python main.py`
-
 ```
 usage: nulla [-h] [--source SOURCE] [--model MODEL]
 
@@ -43,3 +43,5 @@ Build cython module
 
 ## TODO
 * モデル切り替え時に時々推論がストップする.
+* 動画の切り替え
+* OnnxRuntime-GPU
